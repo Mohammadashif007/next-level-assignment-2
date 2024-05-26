@@ -6,6 +6,11 @@ const createProductIntoDb = async(payLoad:TProduct) => {
     return result;
 }
 
+const getAllProductFromDB = async() => {
+    const result = await ProductData.find();
+    return result;
+}
+
 export const ProductServices = {
-    createProductIntoDb
+    createProductIntoDb,getAllProductFromDB
 }

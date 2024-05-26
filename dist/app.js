@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const products_route_1 = require("./app/modules/products/products.route");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use('/api/products', products_route_1.ProductRoutes);
+app.use("/api/products", products_route_1.ProductRoutes);
 app.get("/", (req, res) => {
     res.send("Product server");
 });

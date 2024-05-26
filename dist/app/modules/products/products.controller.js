@@ -25,6 +25,18 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         console.log(error);
     }
 });
+const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield products_service_1.ProductServices.getAllProductFromDB();
+        res.status(200).json({
+            success: true,
+            message: "Products fetched successfully!",
+            data: result
+        });
+    }
+    catch (error) {
+    }
+});
 exports.productController = {
-    createProduct,
+    createProduct, getAllProducts
 };
