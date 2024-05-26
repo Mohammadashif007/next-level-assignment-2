@@ -4,8 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const products_route_1 = require("./app/modules/products/products.route");
 const app = (0, express_1.default)();
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.use(express_1.default.json());
+app.use('/api/products', products_route_1.ProductRoutes);
+app.get("/", (req, res) => {
+    res.send("Product server");
 });
 exports.default = app;
