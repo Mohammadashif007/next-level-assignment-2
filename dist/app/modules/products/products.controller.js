@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productController = void 0;
 const products_service_1 = require("./products.service");
+// ! post product in DB
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const product = req.body;
@@ -25,9 +26,11 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         console.log(error);
     }
 });
+// ! get all products from DB
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield products_service_1.ProductServices.getAllProductFromDB();
+        console.log(result);
         res.status(200).json({
             success: true,
             message: "Products fetched successfully!",
@@ -35,8 +38,24 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
     catch (error) {
+        console.log(error);
+    }
+});
+// ! get product by ID
+const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.productId;
+        const result = yield products_service_1.ProductServices.getProductByIdFromDB(id);
+        res.status(200).json({
+            success: true,
+            message: "Product fetched successfully!",
+            data: result
+        });
+    }
+    catch (error) {
+        console.log(error);
     }
 });
 exports.productController = {
-    createProduct, getAllProducts
+    createProduct, getAllProducts, getProductById
 };
