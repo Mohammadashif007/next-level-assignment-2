@@ -18,7 +18,7 @@ const productSchema = new Schema<TProduct>({
     category: {type: String, required: true},
     tags: {type: [String], required: true},
     variants: {type: [variantsSchema], required: true},
-    inventory: inventorySchema
+    inventory: {type: inventorySchema, required: true}
 })
 
 export const ProductData = model<TProduct>("ProductData", productSchema)

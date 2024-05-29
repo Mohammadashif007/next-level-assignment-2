@@ -17,6 +17,6 @@ const productSchema = new mongoose_1.Schema({
     category: { type: String, required: true },
     tags: { type: [String], required: true },
     variants: { type: [variantsSchema], required: true },
-    inventory: inventorySchema
+    inventory: { type: inventorySchema, required: true }
 });
 exports.ProductData = (0, mongoose_1.model)("ProductData", productSchema);
