@@ -16,14 +16,22 @@ const getProductByIdFromDB = async (id: string) => {
   return result;
 };
 
-const deleteProductById  = async(id: string) => {
-    const result = await ProductData.findByIdAndDelete(id);
-    return result;
-}
+const deleteProductById = async (id: string) => {
+  const result = await ProductData.findByIdAndDelete(id);
+  return result;
+};
+
+const updateProductById = async (id: string, field: any) => {
+  const result = await ProductData.findOneAndUpdate({ _id: id }, field, {
+    new: true,
+  });
+  return result;
+};
 
 export const ProductServices = {
   createProductIntoDb,
   getAllProductFromDB,
   getProductByIdFromDB,
-  deleteProductById
+  deleteProductById,
+  updateProductById,
 };
