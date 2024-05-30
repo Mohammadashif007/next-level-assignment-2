@@ -28,14 +28,19 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getAllProductFromDB();
+    const name = req.query.searchTerm as string;
+    const result = name ? await ProductServices.searchProduct(name) : await ProductServices.getAllProductFromDB();
     res.status(200).json({
       success: true,
-      message: 'Products fetched successfully!',
+      message: name? `Products matching search term ${name} fetched successfully!`: 'Products fetched successfully!',
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Product not found",
+      
+    });
   }
 };
 
@@ -90,6 +95,8 @@ const updateProductFromDb = async(req: Request, res: Response) => {
     console.log(error);
   }
 }
+
+
 
 export const productController = {
   createProduct,

@@ -7,5 +7,6 @@ router.get("/", productController.getAllProducts)
 router.get("/:productId", productController.getProductById)
 router.delete("/:productId", productController.deleteProductFromDb)
 router.put("/:productId", productController.updateProductFromDb)
+// router.get("/?searchTerm=iphone", productController.searchProductByQuery)
 
 export const ProductRoutes = router;
