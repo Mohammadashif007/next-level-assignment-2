@@ -7,7 +7,7 @@ const createOrder = async(req: Request, res: Response) => {
         const result = await OrderService.createOrderIntoDb(orderInfo);
         res.status(200).json({
             success: true,
-            message: "Order created successfully",
+            message: "Order created successfully!",
             data: result
         })
 
@@ -16,7 +16,21 @@ const createOrder = async(req: Request, res: Response) => {
     }
 }
 
+const getAllOrder = async(req: Request, res: Response) => {
+    try {
+        const result = await OrderService.getAllOrderFromDb();
+        res.status(200).json({
+            success: true,
+            message: "Orders fetched successfully!",
+            data: result
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 export const OrderController = {
-    createOrder
+    createOrder,
+    getAllOrder
 }
