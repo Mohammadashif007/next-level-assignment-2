@@ -10,8 +10,14 @@ const getAllOrderFromDb = async() => {
     return result;
 } 
 
+const getOrderByEmail = async(email: any) => {
+    const result = await OrderModel.find({email});
+    return result;
+}
+
 
 export const OrderService = {
     createOrderIntoDb,
-    getAllOrderFromDb
+    getAllOrderFromDb,
+    getOrderByEmail
 }

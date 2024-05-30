@@ -17,7 +17,21 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const result = yield order_service_1.OrderService.createOrderIntoDb(orderInfo);
         res.status(200).json({
             success: true,
-            message: "Order created successfully",
+            message: "Order created successfully!",
+            data: result
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const email = req.query.email;
+        const result = email ? yield order_service_1.OrderService.getOrderByEmail(email) : yield order_service_1.OrderService.getAllOrderFromDb();
+        res.status(200).json({
+            success: true,
+            message: "Orders fetched successfully!",
             data: result
         });
     }
@@ -26,5 +40,6 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.OrderController = {
-    createOrder
+    createOrder,
+    getAllOrder
 };
