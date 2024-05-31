@@ -29,17 +29,20 @@ const createProduct = async (req: Request, res: Response) => {
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const name = req.query.searchTerm as string;
-    const result = name ? await ProductServices.searchProduct(name) : await ProductServices.getAllProductFromDB();
+    const result = name
+      ? await ProductServices.searchProduct(name)
+      : await ProductServices.getAllProductFromDB();
     res.status(200).json({
       success: true,
-      message: name? `Products matching search term ${name} fetched successfully!`: 'Products fetched successfully!',
+      message: name
+        ? `Products matching search term ${name} fetched successfully!`
+        : 'Products fetched successfully!',
       data: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Product not found",
-      
+      message: 'Product not found',
     });
   }
 };
@@ -49,7 +52,6 @@ const getAllProducts = async (req: Request, res: Response) => {
 const getProductById = async (req: Request, res: Response) => {
   try {
     const id = req.params.productId;
-    console.log(id);
     const result = await ProductServices.getProductByIdFromDB(id);
     res.status(200).json({
       success: true,
@@ -61,47 +63,43 @@ const getProductById = async (req: Request, res: Response) => {
   }
 };
 
-
 // ! Delete product from DB
 
 const deleteProductFromDb = async (req: Request, res: Response) => {
-    try {
-        const id = req.params.productId;
-        const result = ProductServices.deleteProductById(id)
-        res.status(200).json({
-          success: true,
-          message: "Product deleted successfully!",
-          data: null
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}
+  try {
+    const id = req.params.productId;
+    await ProductServices.deleteProductById(id);
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully!',
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+// ! Update product
 
-// ! Update product 
-
-const updateProductFromDb = async(req: Request, res: Response) => {
+const updateProductFromDb = async (req: Request, res: Response) => {
   try {
     const id = req.params.productId;
     const updatedField = req.body;
     const result = await ProductServices.updateProductById(id, updatedField);
     res.status(200).json({
       success: true,
-      message: "Product updated successfully!",
-      data: result
-    })
+      message: 'Product updated successfully!',
+      data: result,
+    });
   } catch (error) {
     console.log(error);
   }
-}
-
-
+};
 
 export const productController = {
   createProduct,
   getAllProducts,
   getProductById,
-  deleteProductFromDb, 
+  deleteProductFromDb,
   updateProductFromDb,
 };

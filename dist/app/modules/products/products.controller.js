@@ -36,17 +36,21 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const name = req.query.searchTerm;
-        const result = name ? yield products_service_1.ProductServices.searchProduct(name) : yield products_service_1.ProductServices.getAllProductFromDB();
+        const result = name
+            ? yield products_service_1.ProductServices.searchProduct(name)
+            : yield products_service_1.ProductServices.getAllProductFromDB();
         res.status(200).json({
             success: true,
-            message: name ? `Products matching search term ${name} fetched successfully!` : 'Products fetched successfully!',
+            message: name
+                ? `Products matching search term ${name} fetched successfully!`
+                : 'Products fetched successfully!',
             data: result,
         });
     }
     catch (error) {
         res.status(500).json({
             success: false,
-            message: "Product not found",
+            message: 'Product not found',
         });
     }
 });
@@ -54,7 +58,6 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
 const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.productId;
-        console.log(id);
         const result = yield products_service_1.ProductServices.getProductByIdFromDB(id);
         res.status(200).json({
             success: true,
@@ -70,18 +73,18 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
 const deleteProductFromDb = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.productId;
-        const result = products_service_1.ProductServices.deleteProductById(id);
+        yield products_service_1.ProductServices.deleteProductById(id);
         res.status(200).json({
             success: true,
-            message: "Product deleted successfully!",
-            data: null
+            message: 'Product deleted successfully!',
+            data: null,
         });
     }
     catch (error) {
         console.log(error);
     }
 });
-// ! Update product 
+// ! Update product
 const updateProductFromDb = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.productId;
@@ -89,8 +92,8 @@ const updateProductFromDb = (req, res) => __awaiter(void 0, void 0, void 0, func
         const result = yield products_service_1.ProductServices.updateProductById(id, updatedField);
         res.status(200).json({
             success: true,
-            message: "Product updated successfully!",
-            data: result
+            message: 'Product updated successfully!',
+            data: result,
         });
     }
     catch (error) {

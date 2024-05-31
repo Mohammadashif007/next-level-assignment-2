@@ -23,8 +23,6 @@ const getAllOrderFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getOrderByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_model_1.OrderModel.find({ email });
-    if (!result) {
-    }
     return result;
 });
 exports.OrderService = {
