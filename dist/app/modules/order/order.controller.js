@@ -59,7 +59,10 @@ const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     catch (error) {
-        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: 'order not found',
+        });
     }
 });
 exports.OrderController = {
