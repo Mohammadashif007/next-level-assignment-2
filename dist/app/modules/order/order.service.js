@@ -11,9 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
 const order_model_1 = require("./order.model");
-const createOrderIntoDb = (payLoad) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.OrderModel.create(payLoad);
-    return result;
+const createOrderIntoDb = (orderInfo, session) => __awaiter(void 0, void 0, void 0, function* () {
+    const order = new order_model_1.OrderModel(orderInfo);
+    yield order.save({ session });
+    //   const result = await OrderModel.create(orderInfo);
+    return order;
 });
 const getAllOrderFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_model_1.OrderModel.find();
@@ -21,10 +23,12 @@ const getAllOrderFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getOrderByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_model_1.OrderModel.find({ email });
+    if (!result) {
+    }
     return result;
 });
 exports.OrderService = {
     createOrderIntoDb,
     getAllOrderFromDb,
-    getOrderByEmail
+    getOrderByEmail,
 };

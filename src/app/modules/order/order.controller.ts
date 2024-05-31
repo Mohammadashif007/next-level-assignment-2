@@ -1,37 +1,59 @@
-import { Request, Response } from "express";
-import { OrderService } from "./order.service";
+import { Request, Response } from 'express';
+import { OrderService } from './order.service';
+import { ProductServices } from '../products/products.service';
+import mongoose from 'mongoose';
 
-const createOrder = async(req: Request, res: Response) => {
-    try {
-        const orderInfo = req.body;
-        const result = await OrderService.createOrderIntoDb(orderInfo);
-        res.status(200).json({
-            success: true,
-            message: "Order created successfully!",
-            data: result
-        })
+const createOrder = async (req: Request, res: Response) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    const orderInfo = req.body;
+    await ProductServices.updateProductInventory(
+      orderInfo.productId,
+      orderInfo.quantity,
+      session,
+    );
+    const result = await OrderService.createOrderIntoDb(orderInfo, session);
+    await session.commitTransaction();
+    session.endSession();
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    await session.abortTransaction();
+    session.endSession();
+    res.status(400).json({
+      success: false,
+      message: 'Insufficient quantity available in inventory',
+    });
+  }
+};
 
-    } catch (error) {
-        console.log(error);
+const getAllOrder = async (req: Request, res: Response) => {
+  try {
+    const email = req.query.email;
+    const result = email
+      ? await OrderService.getOrderByEmail(email)
+      : await OrderService.getAllOrderFromDb();
+    if (!result || result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'order not found',
+      });
     }
-}
-
-const getAllOrder = async(req: Request, res: Response) => {
-    try {
-        const email = req.query.email;
-        const result = email? await OrderService.getOrderByEmail(email) : await OrderService.getAllOrderFromDb();
-        res.status(200).json({
-            success: true,
-            message: "Orders fetched successfully!",
-            data: result
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}
-
+    res.status(200).json({
+      success: true,
+      message: 'Orders fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const OrderController = {
-    createOrder,
-    getAllOrder
-}
+  createOrder,
+  getAllOrder,
+};

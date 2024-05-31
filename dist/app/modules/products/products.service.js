@@ -21,7 +21,7 @@ const getAllProductFromDB = () => __awaiter(void 0, void 0, void 0, function* ()
     const result = yield products_model_1.ProductData.find();
     return result;
 });
-// ! get product by id 
+// ! get product by id
 const getProductByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield products_model_1.ProductData.findById(id);
     return result;
@@ -48,11 +48,28 @@ const searchProduct = (searchQuery) => __awaiter(void 0, void 0, void 0, functio
     });
     return result;
 });
+// ! update product inventory
+const updateProductInventory = (id, quantity, session) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = yield products_model_1.ProductData.findById(id).session(session);
+    if (!product) {
+        throw new Error('Order not found');
+    }
+    if (product.inventory.quantity < quantity) {
+        throw new Error('Insufficient quantity available in inventory');
+    }
+    // ! Update product quantity
+    product.inventory.quantity -= quantity;
+    //!update inStock status
+    product.inventory.inStock = product.inventory.quantity > 0;
+    yield product.save({ session });
+    return product;
+});
 exports.ProductServices = {
     createProductIntoDb,
     getAllProductFromDB,
     getProductByIdFromDB,
     deleteProductById,
     updateProductById,
-    searchProduct
+    searchProduct,
+    updateProductInventory,
 };

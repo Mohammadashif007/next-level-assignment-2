@@ -102,5 +102,5 @@ exports.productController = {
     getAllProducts,
     getProductById,
     deleteProductFromDb,
-    updateProductFromDb
+    updateProductFromDb,
 };
