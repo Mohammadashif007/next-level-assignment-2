@@ -33,7 +33,7 @@ const deleteProductById = (id) => __awaiter(void 0, void 0, void 0, function* ()
 });
 // ! update by id
 const updateProductById = (id, field) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield products_model_1.ProductData.findOneAndUpdate({ _id: id }, field, {
+    const result = yield products_model_1.ProductData.findOneAndUpdate({ _id: id }, { $set: field }, {
         new: true,
     });
     return result;

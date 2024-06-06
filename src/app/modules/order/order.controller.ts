@@ -2,18 +2,20 @@ import { Request, Response } from 'express';
 import { OrderService } from './order.service';
 import { ProductServices } from '../products/products.service';
 import mongoose from 'mongoose';
+import orderValidationSchema from './order.validation';
 
 const createOrder = async (req: Request, res: Response) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
     const orderInfo = req.body;
+    const validatedOrderInfo = orderValidationSchema.parse(orderInfo);
     await ProductServices.updateProductInventory(
-      orderInfo.productId,
-      orderInfo.quantity,
+        validatedOrderInfo.productId,
+        validatedOrderInfo.quantity,
       session,
     );
-    const result = await OrderService.createOrderIntoDb(orderInfo, session);
+    const result = await OrderService.createOrderIntoDb(validatedOrderInfo, session);
     await session.commitTransaction();
     session.endSession();
     res.status(200).json({

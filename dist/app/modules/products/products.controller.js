@@ -90,6 +90,13 @@ const updateProductFromDb = (req, res) => __awaiter(void 0, void 0, void 0, func
         const id = req.params.productId;
         const updatedField = req.body;
         const result = yield products_service_1.ProductServices.updateProductById(id, updatedField);
+        if (!result) {
+            return res.status(500).json({
+                success: false,
+                message: 'something went wrong!',
+                data: result,
+            });
+        }
         res.status(200).json({
             success: true,
             message: 'Product updated successfully!',

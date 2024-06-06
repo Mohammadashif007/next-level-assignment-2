@@ -33,7 +33,7 @@ const deleteProductById = async (id: string) => {
 // ! update by id
 
 const updateProductById = async (id: string, field: any) => {
-  const result = await ProductData.findOneAndUpdate({ _id: id }, field, {
+  const result = await ProductData.findOneAndUpdate({ _id: id }, {$set:field}, {
     new: true,
   });
   return result;

@@ -16,13 +16,15 @@ exports.OrderController = void 0;
 const order_service_1 = require("./order.service");
 const products_service_1 = require("../products/products.service");
 const mongoose_1 = __importDefault(require("mongoose"));
+const order_validation_1 = __importDefault(require("./order.validation"));
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const session = yield mongoose_1.default.startSession();
     session.startTransaction();
     try {
         const orderInfo = req.body;
-        yield products_service_1.ProductServices.updateProductInventory(orderInfo.productId, orderInfo.quantity, session);
-        const result = yield order_service_1.OrderService.createOrderIntoDb(orderInfo, session);
+        const validatedOrderInfo = order_validation_1.default.parse(orderInfo);
+        yield products_service_1.ProductServices.updateProductInventory(validatedOrderInfo.productId, validatedOrderInfo.quantity, session);
+        const result = yield order_service_1.OrderService.createOrderIntoDb(validatedOrderInfo, session);
         yield session.commitTransaction();
         session.endSession();
         res.status(200).json({
