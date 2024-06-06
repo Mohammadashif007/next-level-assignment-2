@@ -7,7 +7,7 @@ const createOrderIntoDb = async (
 ) => {
   const order = new OrderModel(orderInfo);
   await order.save({ session });
-//   const result = await OrderModel.create(orderInfo);
+  //   const result = await OrderModel.create(orderInfo);
   return order;
 };
 

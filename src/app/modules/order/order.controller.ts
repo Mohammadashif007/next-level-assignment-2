@@ -11,11 +11,14 @@ const createOrder = async (req: Request, res: Response) => {
     const orderInfo = req.body;
     const validatedOrderInfo = orderValidationSchema.parse(orderInfo);
     await ProductServices.updateProductInventory(
-        validatedOrderInfo.productId,
-        validatedOrderInfo.quantity,
+      validatedOrderInfo.productId,
+      validatedOrderInfo.quantity,
       session,
     );
-    const result = await OrderService.createOrderIntoDb(validatedOrderInfo, session);
+    const result = await OrderService.createOrderIntoDb(
+      validatedOrderInfo,
+      session,
+    );
     await session.commitTransaction();
     session.endSession();
     res.status(200).json({
